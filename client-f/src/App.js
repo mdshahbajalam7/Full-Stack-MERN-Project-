@@ -6,17 +6,17 @@ import { getpost } from "./actions/posts";
 import Form from "./components/Form/Form";
 import Posts from "./components/Posts/Posts";
 import useStyles from "./styles";
-const memories =
-  "https://raw.githubusercontent.com/adrianhajdin/project_mern_memories/master/client/src/images/memories.png?token=AF56X74XONEUGZ4FD2FUIA27UURPI";
+// const memories =
+//   "https://raw.githubusercontent.com/adrianhajdin/project_mern_memories/master/client/src/images/memories.png?token=AF56X74XONEUGZ4FD2FUIA27UURPI";
 
 function App() {
-  const [currentId,setcurrentId]=useState(null)
+  const [currentId, setcurrentId] = useState(null);
   const classes = useStyles();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(getpost())
-  },[dispatch])
+  useEffect(() => {
+    dispatch(getpost());
+  }, [currentId, dispatch]);
   return (
     <Container maxWidth="lg">
       {/* h1jsfdakjfkasjdk */}
@@ -36,7 +36,9 @@ function App() {
       <Grow in>
         <Container>
           <Grid
+           
             container
+            // direction="column-reverse"
             justifyContent="space-between"
             alignItems="stretch"
             spacing={3}
@@ -45,7 +47,7 @@ function App() {
               <Posts setcurrentId={setcurrentId} />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Form currentId={currentId} setcurrentId={setcurrentId}/>
+              <Form currentId={currentId} setcurrentId={setcurrentId} />
             </Grid>
           </Grid>
         </Container>

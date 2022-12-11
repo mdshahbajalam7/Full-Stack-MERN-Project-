@@ -7,12 +7,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-// import Posts from "../Posts";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import useStyles from "./styles";
 import moment from "moment";
+import { useDispatch } from "react-redux";
+import { deletepost, likepost } from "../../../actions/posts";
 
 function Post({
   _id,
@@ -25,9 +26,9 @@ function Post({
   linkCount,
   setcurrentId,
 }) {
-  // const {seletedFile}=posts
-  // seletedFile
   const classes = useStyles();
+
+  const dispatch = useDispatch();
   return (
     <Card className={classes.card}>
       <CardMedia className={classes.media} image={selectedFile} title={title} />
@@ -49,18 +50,29 @@ function Post({
           {tags.map((tag) => `#${tag}`)}
         </Typography>
       </div>
+      <Typography className={classes.title} variant="h5" gutterBottom>
+        {title}
+      </Typography>
       <CardContent>
-        <Typography className={classes.title} variant="h5" gutterBottom>
+        <Typography variant="body2" color="textScondary" component="p" >
           {message}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(likepost(_id))}
+        >
           <ThumbUpAltIcon fontSize="small" />
-          Link
+          &nbsp; Link &nbsp;
           {linkCount}
         </Button>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(deletepost(_id))}
+        >
           <DeleteIcon fontSize="small" />
           Delete
         </Button>

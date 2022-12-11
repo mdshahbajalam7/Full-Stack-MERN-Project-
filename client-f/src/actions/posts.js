@@ -1,31 +1,55 @@
 import * as api from "../api";
+import { CREATE, DELETE, FETCH_ALL, LIKE, UPDATE } from "../constants/actionType";
 
 //  Action Creators
 export const getpost = () => async (dispatch) => {
   try {
     const { data } = await api.fetchPosts();
-    dispatch({ type: "FETCH_ALL", payload: data });
+    dispatch({ type: FETCH_ALL, payload: data });
   } catch (error) {
     console.log(error);
   }
-  //   const action = { type: "FETCH_ALL", payload: [] };
 };
 
+// POST HERE DATA IN SERVER
 export const CreatePost = (psot) => async (dispatch) => {
   try {
     const { data } = await api.CreatePosts(psot);
-    dispatch({ type: "CREATE", payload: data });
+    dispatch({ type: CREATE, payload: data });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const updateposts = (id,post)=>async(dispatch)=>{
+// UPDATE HERE DATA IN SERVER
+
+export const updateposts = (id, post) => async (dispatch) => {
   try {
-    
-    const {data} = await api.updateposts(id,post)
-    dispatch({type:"UPDATE",payload:data})
+    const { data } = await api.updateposts(id, post);
+    dispatch({ type: UPDATE, payload: data });
   } catch (error) {
     console.log(error.message);
   }
-}
+};
+
+// DELETE HERE DATA IN SERVER
+
+export const deletepost = (id) => async (dispatch) => {
+  try {
+    await api.deleteposts(id);
+    dispatch({ type: DELETE, payload: id });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// LIKE HERE DATA IN SERVER
+
+export const likepost = (id) => async (dispatch) => {
+  try {
+    const { data } = await api.linkposts(id);
+    dispatch({ type: LIKE, payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -24,19 +24,30 @@ function Form({ currentId, setcurrentId }) {
     currentId ? state.posts.find((p) => p._id === currentId) : null
   );
 
-  useEffect(()=>{
-    if(posts) setpostsData(posts)
-  },[posts])
- 
+  useEffect(() => {
+    if (posts) setpostsData(posts);
+  }, [posts]);
+
   const handlesubmit = (e) => {
     e.preventDefault();
     if (currentId) {
       dispatch(updateposts(currentId, postsData));
+      clear();
     } else {
       dispatch(CreatePost(postsData));
+      clear();
     }
   };
-  const clear = () => {};
+  const clear = () => {
+    setcurrentId(null);
+    setpostsData({
+      creator: "",
+      title: "",
+      message: "",
+      tags: "",
+      selectedFile: "",
+    });
+  };
   return (
     <Paper className={classes.paper}>
       <form
@@ -45,7 +56,9 @@ function Form({ currentId, setcurrentId }) {
         className={`${classes.root} ${classes.form}`}
         onSubmit={handlesubmit}
       >
-        <Typography variant="h6">Creating a Curd</Typography>
+        <Typography variant="h6">
+          {currentId ? "Editing" : "Creating"} a Curd Operation{" "}
+        </Typography>
         <TextField
           name="creator"
           label="Creator"
@@ -82,7 +95,7 @@ function Form({ currentId, setcurrentId }) {
           variant="outlined"
           fullWidth
           value={postsData.tags}
-          onChange={(e) => setpostsData({ ...postsData, tags: e.target.value })}
+          onChange={(e) => setpostsData({ ...postsData, tags: e.target.value.split(',') })}
         />
         <div className={classes.fileInput}>
           <FileBase
