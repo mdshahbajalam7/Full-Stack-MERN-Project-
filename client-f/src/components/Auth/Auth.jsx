@@ -3,8 +3,8 @@ import {
   Button,
   Container,
   Grid,
+  //   Icon,
   Paper,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import React from "react";
@@ -12,21 +12,55 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import useStyles from "./styles";
 import Input from "./Input";
 import { useState } from "react";
+import { GoogleLogin } from "react-google-login";
+import Icon from "./Icon";
+import { gapi } from "gapi-script";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Auth() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [showPassword, setshowPassword] = useState(false);
-  const [IsSingup,setIsSingup]=useState(false)
-//   const IsSingup = false;
+  const [IsSingup, setIsSingup] = useState(false);
+  //   const IsSingup = false;
   const handleChange = () => {};
   const handleSubmit = () => {};
   const handleShowPassword = () =>
     setshowPassword((prevShowPassword) => !prevShowPassword);
 
   const SwitchMood = () => {
-    setIsSingup((prevIsSignup)=>!prevIsSignup)
-    setshowPassword(false)
+    setIsSingup((prevIsSignup) => !prevIsSignup);
+    setshowPassword(false);
   };
+  // YOUR CLIEND ID = 915300106478-fj0k46ekat989j8qrabqc9s42fgufags.apps.googleusercontent.com
+  // YOYR CLIEND SERVER = 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
+  useEffect(() => {
+    gapi.load("client:auth2", () => {
+      gapi.auth2.init({
+        clientId:
+          "915300106478-fj0k46ekat989j8qrabqc9s42fgufags.apps.googleusercontent.com",
+      });
+    });
+  }, []);
+  const googleSuccess = async (res) => {
+    console.log(res);
+    let result = res?.profileObj;
+    let token = res?.tokenId;
+    try {
+      dispatch({ type: "AUTH", data: { result, token } });
+      navigate("/")
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const googleFailure = (error) => {
+    console.log(error);
+    console.log("Google Sign In was UnSuccessfull. Try Again Later ");
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={3}>
@@ -87,6 +121,25 @@ function Auth() {
           >
             {IsSingup ? "Sign Up" : "Sign In"}
           </Button>
+          <GoogleLogin
+            clientId="915300106478-fj0k46ekat989j8qrabqc9s42fgufags.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <Button
+                className={classes.googleButton}
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                startIcon={<Icon />}
+              >
+                Google Sign In
+              </Button>
+            )}
+            onSuccess={googleSuccess}
+            onFailure={googleFailure}
+            cookiePolicy="single_host_origin"
+          />
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={SwitchMood}>
