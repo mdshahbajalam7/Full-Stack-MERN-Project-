@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useStyles from "./styles";
 // import Link from 'raect-router-dom'
 
@@ -12,7 +12,8 @@ function Navbar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  console.log(user);
+  // console.log(user);
+  const location = useLocation()
 
   const logout = () => {
     dispatch({type:"LOGOUT"})
@@ -20,13 +21,13 @@ function Navbar() {
 
     setUser(null)
   };
-  // useEffect(() => {
-  //   const token = user?.token;
+  useEffect(() => {
+    const token = user?.token;
 
-  //   // JWT
+    // JWT
 
-  //   setUser(JSON.parse(localStorage.getItem("profile")));
-  // }, []);
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [location]);
   // const user = null;
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
