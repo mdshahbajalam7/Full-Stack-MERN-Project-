@@ -18,16 +18,34 @@ import { gapi } from "gapi-script";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { signin, signup } from "../../actions/auth";
+const intialState = {
+  FirstName: "",
+  LastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 function Auth() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [showPassword, setshowPassword] = useState(false);
   const [IsSingup, setIsSingup] = useState(false);
+  const [formData, setformData] = useState(intialState);
   //   const IsSingup = false;
-  const handleChange = () => {};
-  const handleSubmit = () => {};
+  const handleChange = (e) => {
+    setformData({ ...formData, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    if (IsSingup) {
+      dispatch(signup(formData, navigate));
+    } else {
+      dispatch(signin(formData, navigate));
+    }
+  };
   const handleShowPassword = () =>
     setshowPassword((prevShowPassword) => !prevShowPassword);
 
@@ -51,7 +69,7 @@ function Auth() {
     let token = res?.tokenId;
     try {
       dispatch({ type: "AUTH", data: { result, token } });
-      navigate("/")
+      navigate("/");
     } catch (error) {
       console.log(error);
     }

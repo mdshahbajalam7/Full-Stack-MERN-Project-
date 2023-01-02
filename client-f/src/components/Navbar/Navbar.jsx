@@ -5,26 +5,31 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useStyles from "./styles";
+import decode from "jwt-decode";
 // import Link from 'raect-router-dom'
 
 function Navbar() {
   const classes = useStyles();
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   // console.log(user);
-  const location = useLocation()
+  const location = useLocation();
 
   const logout = () => {
-    dispatch({type:"LOGOUT"})
-    navigate("/")
+    dispatch({ type: "LOGOUT" });
+    navigate("/");
 
-    setUser(null)
+    setUser(null);
   };
   useEffect(() => {
     const token = user?.token;
 
     // JWT
+    if (token) {
+      const decodedToken = decode(token);
+      if(decodedToken.exp*1000 < new Date().getTime()) logout()
+    }
 
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
@@ -39,7 +44,7 @@ function Navbar() {
           variant="h2"
           align="center"
         >
-          Curd Operation
+          Memorise Create
         </Typography>
         {/* <img
       className={classes.image}

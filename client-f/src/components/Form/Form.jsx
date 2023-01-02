@@ -10,16 +10,18 @@ import { useEffect } from "react";
 // GET THE CURRENT ID
 
 function Form({ currentId, setcurrentId }) {
+  
   console.log(currentId);
   const classes = useStyles();
   const dispatch = useDispatch();
   const [postsData, setpostsData] = useState({
-    creator: "",
+    // creator: "",
     title: "",
     message: "",
     tags: "",
     selectedFile: "",
   });
+  const user = JSON.parse(localStorage.getItem("profile"));
   const posts = useSelector((state) =>
     currentId ? state.posts.find((p) => p._id === currentId) : null
   );
@@ -30,18 +32,29 @@ function Form({ currentId, setcurrentId }) {
 
   const handlesubmit = (e) => {
     e.preventDefault();
-    if (currentId) {
-      dispatch(updateposts(currentId, postsData));
+    if (currentId === 0) {
+      dispatch(CreatePost({ ...postsData, name: user?.result?.name }));
       clear();
     } else {
-      dispatch(CreatePost(postsData));
+      dispatch(updateposts(currentId,{ ...postsData, name: user?.result?.name }));
       clear();
     }
   };
+
+  if(!user?.result?.name){
+    return(
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please Sign In Create Your own Memorise and Like's Other memorise.!
+        </Typography>
+
+      </Paper>
+    )
+  }
   const clear = () => {
-    setcurrentId(null);
+    setcurrentId(0);
     setpostsData({
-      creator: "",
+      // creator: "",
       title: "",
       message: "",
       tags: "",
@@ -59,7 +72,7 @@ function Form({ currentId, setcurrentId }) {
         <Typography variant="h6">
           {currentId ? "Editing" : "Creating"} a Curd Operation{" "}
         </Typography>
-        <TextField
+        {/* <TextField
           name="creator"
           label="Creator"
           variant="outlined"
@@ -68,7 +81,7 @@ function Form({ currentId, setcurrentId }) {
           onChange={(e) =>
             setpostsData({ ...postsData, creator: e.target.value })
           }
-        />
+        /> */}
         <TextField
           name="title"
           label="Title"
@@ -95,7 +108,9 @@ function Form({ currentId, setcurrentId }) {
           variant="outlined"
           fullWidth
           value={postsData.tags}
-          onChange={(e) => setpostsData({ ...postsData, tags: e.target.value.split(',') })}
+          onChange={(e) =>
+            setpostsData({ ...postsData, tags: e.target.value.split(",") })
+          }
         />
         <div className={classes.fileInput}>
           <FileBase
