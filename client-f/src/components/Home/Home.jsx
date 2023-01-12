@@ -29,8 +29,12 @@ function Home() {
   const page = query.get("page") || 1;
   const [search, setsearch] = useState("");
   const [tags, settags] = useState([]);
-
   const searchQuery = query.get("searchQuery");
+
+  useEffect(() => {
+    dispatch(getpost());
+  }, [currentId, dispatch]);
+
   const handlepresskey = (e) => {
     if (e.keyCode === 13) {
       // serach post
@@ -39,9 +43,7 @@ function Home() {
   const handleDelete = (tag) => settags([...tags, tag]);
   const handleAdd = (tagToDelete) =>
     settags(tags.filter((tag) => tag !== tagToDelete));
-  useEffect(() => {
-    dispatch(getpost());
-  }, [currentId, dispatch]);
+
   return (
     <Grow in>
       <Container maxWidth="xl">
