@@ -11,6 +11,19 @@ export const getPosts = async (req, res) => {
   }
 };
 
+export const getPostsBySearch = async (req, res) => {
+  const { searchQuery, tags } = req.query;
+  try {
+    const title = new RegExp(searchQuery, "i");
+    const posts = await postMessage.find({
+      $or: [{ title }, { tags: { $in: tags.split(",") } }],
+    });
+    res.status(200).json({ data: posts });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 export const getpost = async (req, res) => {
   const { id } = req.params;
   try {
@@ -89,8 +102,7 @@ export const deletepost = async (req, res) => {
 export const likepost = async (req, res) => {
   const { id } = req.params;
   // 57
-  if ((!req.userId))
-    return res.status(402).json({ message: "Unauthentication" });
+  if (!req.userId) return res.status(402).json({ message: "Unauthentication" });
 
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send("No post with that id");

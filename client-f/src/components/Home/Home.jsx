@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Button,
   Container,
   Grid,
   Grow,
@@ -9,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getpost } from "../../actions/posts";
+import { getpost, getpostBySearch } from "../../actions/posts";
 import Form from "../Form/Form";
 import Paginations from "../Pagination/Paginations";
 import Posts from "../Posts/Posts";
@@ -35,14 +36,25 @@ function Home() {
     dispatch(getpost());
   }, [currentId, dispatch]);
 
-  const handlepresskey = (e) => {
+  const handleKeyPress = (e) => {
     if (e.keyCode === 13) {
       // serach post
+      SerachPost();
     }
   };
-  const handleDelete = (tag) => settags([...tags, tag]);
-  const handleAdd = (tagToDelete) =>
+  const handleAdd = (tag) => settags([...tags, tag]);
+  const handleDelete = (tagToDelete) => {
     settags(tags.filter((tag) => tag !== tagToDelete));
+  };
+
+  const SerachPost = () => {
+    if (search.trim()) {
+      // dispatch -> fetch search post
+      dispatch(getpostBySearch({search,tags:tags.join(',')}));
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <Grow in>
@@ -69,7 +81,7 @@ function Home() {
                 variant="outlined"
                 label="Search Memories"
                 fullWidth
-                onKeyPress={handlepresskey}
+                onKeyPress={handleKeyPress}
                 value={search}
                 onChange={(e) => setsearch(e.target.value)}
               />
@@ -81,6 +93,14 @@ function Home() {
                 label="Search Tags"
                 variant="outlined"
               />
+              <Button
+                onClick={SerachPost}
+                className={classes.searchButton}
+                variant="contained"
+                color="primary"
+              >
+                Search
+              </Button>
             </AppBar>
             <Form currentId={currentId} setcurrentId={setcurrentId} />
             <Paper elevation={6}>
