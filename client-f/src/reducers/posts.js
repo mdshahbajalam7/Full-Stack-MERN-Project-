@@ -10,12 +10,12 @@ import {
   UPDATE,
 } from "../constants/actionType";
 
-export default (state = [], action) => {
+export default (state = { isloading: true, posts: [] }, action) => {
   switch (action.type) {
     case START_LOADING:
-      return {};
+      return { ...state, isloading: true };
     case END_LOADING:
-      return {};
+      return { ...state, iserror: false };
     // GET
     case FETCH_ALL:
       return {
@@ -23,28 +23,44 @@ export default (state = [], action) => {
         posts: action.payload.data,
         currentPage: action.payload.currentPage,
         numberofpages: action.payload.numberofpages,
+        isloading: false,
+        iserror: false,
       };
 
     // GET DATABY SEARCH
     case FETCH_BY_SEARCH:
-      return { ...state, posts: action.payload };
+      return {
+        ...state,
+        posts: action.payload,
+        isloading: false,
+        iserror: false,
+      };
 
     // CREATE
     case CREATE:
-      return [...state, action.payload];
+      return {...state,posts: [...state.posts, action.payload]};
     // UPDATE
     case UPDATE:
-      return state.map((post) =>
-        post._id === action.payload._id ? action.payload : post
-      );
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
     // LIKE
     case LIKE:
-      return state.map((post) =>
-        post._id === action.payload._id ? action.payload : post
-      );
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
     // DELETE
     case DELETE:
-      return state.filter((post) => post._id !== action.payload);
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post._id !== action.payload),
+      };
 
     default:
       return state;
