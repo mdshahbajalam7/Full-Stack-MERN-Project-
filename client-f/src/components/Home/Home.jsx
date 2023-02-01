@@ -36,6 +36,18 @@ function Home() {
     dispatch(getpost());
   }, [currentId, dispatch]);
 
+  const SerachPost = () => {
+    if (search.trim() || tags) {
+      // dispatch -> fetch search post
+      dispatch(getpostBySearch({ search, tags: tags.join(",") }));
+      navigate(
+        `/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
+      );
+    } else {
+      navigate("/");
+    }
+  };
+
   const handleKeyPress = (e) => {
     if (e.keyCode === 13) {
       // serach post
@@ -45,15 +57,6 @@ function Home() {
   const handleAdd = (tag) => settags([...tags, tag]);
   const handleDelete = (tagToDelete) => {
     settags(tags.filter((tag) => tag !== tagToDelete));
-  };
-
-  const SerachPost = () => {
-    if (search.trim()) {
-      // dispatch -> fetch search post
-      dispatch(getpostBySearch({search,tags:tags.join(',')}));
-    } else {
-      navigate("/");
-    }
   };
 
   return (
