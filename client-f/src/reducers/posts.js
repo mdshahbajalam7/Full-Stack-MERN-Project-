@@ -1,33 +1,52 @@
-import { CREATE, DELETE, FETCH_ALL, FETCH_BY_SEARCH, LIKE, UPDATE } from "../constants/actionType";
+// import { STATES } from "mongoose";
+import {
+  CREATE,
+  DELETE,
+  END_LOADING,
+  FETCH_ALL,
+  FETCH_BY_SEARCH,
+  LIKE,
+  START_LOADING,
+  UPDATE,
+} from "../constants/actionType";
 
-export default (posts = [], action) => {
+export default (state = [], action) => {
   switch (action.type) {
+    case START_LOADING:
+      return {};
+    case END_LOADING:
+      return {};
     // GET
     case FETCH_ALL:
-      return action.payload;
+      return {
+        ...state,
+        posts: action.payload.data,
+        currentPage: action.payload.currentPage,
+        numberofpages: action.payload.numberofpages,
+      };
 
     // GET DATABY SEARCH
     case FETCH_BY_SEARCH:
-      return action.payload
-    
+      return { ...state, posts: action.payload };
+
     // CREATE
     case CREATE:
-      return [...posts, action.payload];
+      return [...state, action.payload];
     // UPDATE
     case UPDATE:
-      return posts.map((post) =>
+      return state.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );
     // LIKE
     case LIKE:
-      return posts.map((post) =>
+      return state.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );
     // DELETE
     case DELETE:
-      return posts.filter((post) => post._id !== action.payload);
+      return state.filter((post) => post._id !== action.payload);
 
     default:
-      return posts;
+      return state;
   }
 };

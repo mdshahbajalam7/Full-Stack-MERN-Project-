@@ -19,8 +19,8 @@ function App() {
       <Routes>
         {/* <Route path="/" exact element={() => <Navigate to="/posts" replace/>} /> */}
         <Route path="/" exact element={<Home />} />
-        <Route path="/search" exact element={<Home />} />
-        <Route path="/:id" element={<PostDetails />} />
+        <Route path="/posts/search" exact element={<Home />} />
+        <Route path="/posts/:id" element={<PostDetails />} />
         <Route path="/auth" exact element={<Auth />} />
       </Routes>
       {/* </Switch> */}

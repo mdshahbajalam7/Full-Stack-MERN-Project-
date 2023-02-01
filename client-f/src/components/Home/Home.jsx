@@ -32,16 +32,16 @@ function Home() {
   const [tags, settags] = useState([]);
   const searchQuery = query.get("searchQuery");
 
-  useEffect(() => {
-    dispatch(getpost());
-  }, [currentId, dispatch]);
+  // useEffect(() => {
+  //   dispatch(getpost());
+  // }, [currentId, dispatch]);
 
   const SerachPost = () => {
     if (search.trim() || tags) {
       // dispatch -> fetch search post
       dispatch(getpostBySearch({ search, tags: tags.join(",") }));
       navigate(
-        `/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
+        `/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
       );
     } else {
       navigate("/");
@@ -107,7 +107,7 @@ function Home() {
             </AppBar>
             <Form currentId={currentId} setcurrentId={setcurrentId} />
             <Paper elevation={6}>
-              <Paginations />
+              <Paginations page={page} />
             </Paper>
           </Grid>
         </Grid>
