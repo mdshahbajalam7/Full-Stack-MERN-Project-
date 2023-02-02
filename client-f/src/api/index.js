@@ -16,13 +16,23 @@ export const fetchPost = (id) => API.get(`/posts/${id}`);
 
 export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
 
-export const fetchPostsBySearch = (searchQuery) =>
-  API.get(
-    `/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${
-      searchQuery.tags
-    }`
-  );
+export const fetchPostsBySearch = (searchQuery) =>{
+  console.log(searchQuery);
+  let getUrl = "/posts/search?searchQuery="
 
+  if(searchQuery.search!=""){
+    getUrl+=`${searchQuery.search}`
+  }
+
+  if(searchQuery.tags!=""){
+    if(searchQuery.search!=""){
+      getUrl+=`&`
+    }
+    getUrl+=`tags=${searchQuery.tags}`
+  }
+
+  return API.get(getUrl)
+}
 
 export const CreatePosts = (newpost) => API.post(`/posts`, newpost);
 
