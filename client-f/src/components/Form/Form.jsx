@@ -10,7 +10,6 @@ import { useEffect } from "react";
 // GET THE CURRENT ID
 
 function Form({ currentId, setcurrentId }) {
-  
   console.log(currentId);
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -25,6 +24,7 @@ function Form({ currentId, setcurrentId }) {
   const posts = useSelector((state) =>
     currentId ? state.posts.find((p) => p._id === currentId) : null
   );
+  // console.log(posts)
 
   useEffect(() => {
     if (posts) setpostsData(posts);
@@ -36,20 +36,21 @@ function Form({ currentId, setcurrentId }) {
       dispatch(CreatePost({ ...postsData, name: user?.result?.name }));
       clear();
     } else {
-      dispatch(updateposts(currentId,{ ...postsData, name: user?.result?.name }));
+      dispatch(
+        updateposts(currentId, { ...postsData, name: user?.result?.name })
+      );
       clear();
     }
   };
 
-  if(!user?.result?.name){
-    return(
+  if (!user?.result?.name) {
+    return (
       <Paper className={classes.paper}>
         <Typography variant="h6" align="center">
           Please Sign In Create Your own Memorise and Like's Other memorise.!
         </Typography>
-
       </Paper>
-    )
+    );
   }
   const clear = () => {
     setcurrentId(0);
