@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonBase,
   Card,
   CardActions,
   CardContent,
@@ -15,7 +16,7 @@ import useStyles from "./styles";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { deletepost, likepost } from "../../../actions/posts";
-
+import { useNavigate } from "react-router-dom";
 function Post({
   title,
   post,
@@ -24,6 +25,8 @@ function Post({
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const user = JSON.parse(localStorage.getItem("profile"));
   const Likes = () => {
     if (post.likes > 0) {
@@ -51,9 +54,13 @@ function Post({
       </>
     );
   };
+  const openPost = () => {
+    navigate(`/posts/${post._id}`)
+  };
 
   return (
     <Card className={classes.card} raised elevation={6}>
+      <ButtonBase className={classes.cardActions}onClick={openPost}></ButtonBase>
       <CardMedia
         className={classes.media}
         image={post.selectedFile}
@@ -91,6 +98,9 @@ function Post({
           {post.message}
         </Typography>
       </CardContent>
+      
+      
+
       <CardActions className={classes.cardActions}>
         <Button
           size="small"
@@ -112,6 +122,7 @@ function Post({
           </Button>
         )}
       </CardActions>
+      
     </Card>
   );
 }

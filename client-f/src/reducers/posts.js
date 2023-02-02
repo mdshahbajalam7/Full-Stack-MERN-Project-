@@ -5,6 +5,7 @@ import {
   END_LOADING,
   FETCH_ALL,
   FETCH_BY_SEARCH,
+  FETCH_POST,
   LIKE,
   START_LOADING,
   UPDATE,
@@ -36,9 +37,17 @@ export default (state = { isloading: true, posts: [] }, action) => {
         iserror: false,
       };
 
+    case FETCH_POST:
+      return {
+        ...state,
+        post: action.payload,
+        isloading: false,
+        iserror: false,
+      };
+
     // CREATE
     case CREATE:
-      return {...state,posts: [...state.posts, action.payload]};
+      return { ...state, posts: [...state.posts, action.payload] };
     // UPDATE
     case UPDATE:
       return {

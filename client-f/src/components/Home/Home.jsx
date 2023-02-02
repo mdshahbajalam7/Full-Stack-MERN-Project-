@@ -105,13 +105,12 @@ function Home() {
                 Search
               </Button>
             </AppBar>
-            <Form currentId={currentId} setcurrentId={setcurrentId}  />
-            {/* {!searchQuery && !tags.length && (
-              
-            )} */}
-            <Paper elevation={6} className={classes.pagination}>
+            <Form currentId={currentId} setcurrentId={setcurrentId} />
+            {/* {(!searchQuery && !tags.length) && ( */}
+              <Paper elevation={6} className={classes.pagination}>
                 <Paginations page={page} />
               </Paper>
+            {/* // )} */}
           </Grid>
         </Grid>
       </Container>

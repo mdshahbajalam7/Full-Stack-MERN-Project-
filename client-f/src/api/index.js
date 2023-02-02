@@ -12,6 +12,7 @@ API.interceptors.request.use((req) => {
 });
 
 // const url = "http://localhost:5000/posts";
+export const fetchPost = (id) => API.get(`/posts/${id}`);
 
 export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
 
