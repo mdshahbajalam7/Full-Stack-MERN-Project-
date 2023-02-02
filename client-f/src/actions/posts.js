@@ -53,10 +53,11 @@ export const getpostBySearch = (searchQuery) => async (dispatch) => {
 };
 
 // POST HERE DATA IN SERVER
-export const CreatePost = (psot) => async (dispatch) => {
+export const CreatePost = (psot, navigate) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
     const { data } = await api.CreatePosts(psot);
+    navigate(`/posts/${data._id}`);
     dispatch({ type: CREATE, payload: data });
     dispatch({ type: END_LOADING });
   } catch (error) {

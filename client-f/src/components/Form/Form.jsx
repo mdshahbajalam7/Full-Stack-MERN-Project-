@@ -6,6 +6,7 @@ import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
 import { CreatePost, updateposts } from "../../actions/posts";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // GET THE CURRENT ID
 
@@ -13,6 +14,7 @@ function Form({ currentId, setcurrentId }) {
   console.log(currentId);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [postsData, setpostsData] = useState({
     // creator: "",
     title: "",
@@ -22,7 +24,7 @@ function Form({ currentId, setcurrentId }) {
   });
   const user = JSON.parse(localStorage.getItem("profile"));
   const posts = useSelector((state) =>
-    currentId ? state.posts.find((p) => p._id === currentId) : null
+    currentId ? state.posts.posts.find((p) => p._id === currentId) : null
   );
   // console.log(posts)
 
@@ -33,7 +35,8 @@ function Form({ currentId, setcurrentId }) {
   const handlesubmit = (e) => {
     e.preventDefault();
     if (currentId === 0) {
-      dispatch(CreatePost({ ...postsData, name: user?.result?.name }));
+      dispatch(CreatePost({ ...postsData, name: user?.result?.name },navigate));
+     
       clear();
     } else {
       dispatch(
