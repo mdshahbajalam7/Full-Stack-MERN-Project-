@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getposts, getpostBySearch } from "../../actions/posts";
+import Commentsection from "./Commentsection";
 import useStyles from "./styles";
 
 function PostDetails() {
@@ -24,11 +25,11 @@ function PostDetails() {
     dispatch(getposts(id));
   }, [id]);
 
-  useEffect(() => {
-    if (posts) {
-      dispatch(getpostBySearch({ search: "none", tags: post?.tags.join(",") }));
-    }
-  }, [posts]);
+  // useEffect(() => {
+  //   if (post) {
+  //     dispatch(getpostBySearch({ search: "none", tags: post?.tags.join(",") }));
+  //   }
+  // }, [post]);
 
   if (!post) {
     return null;
@@ -46,6 +47,7 @@ function PostDetails() {
   };
 
   const recommnadedpost = posts.filter(({ _id }) => _id !== post._id);
+
   return (
     <Paper style={{ padding: "20px", borderRadius: "15px" }} elevation={6}>
       <div className={classes.card}>
@@ -73,9 +75,10 @@ function PostDetails() {
             <strong>Realtime Chat - coming soon!</strong>
           </Typography>
           <Divider style={{ margin: "20px 0" }} />
-          <Typography variant="body1">
+          {/* <Typography variant="body1">
             <strong>Comments - coming soon!</strong>
-          </Typography>
+          </Typography> */}
+          <Commentsection post={post}/>
           <Divider style={{ margin: "20px 0" }} />
         </div>
         <div className={classes.imageSection}>

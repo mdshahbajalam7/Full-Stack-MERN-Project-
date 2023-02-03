@@ -1,5 +1,6 @@
 // import { STATES } from "mongoose";
 import {
+  COMMENT,
   CREATE,
   DELETE,
   END_LOADING,
@@ -65,6 +66,20 @@ export default (state = { isloading: true, posts: [] }, action) => {
         ),
       };
     // DELETE
+
+    case COMMENT:
+      return {
+        ...state,
+        posts: state.posts.map((post) => {
+          // change the post just received a comment........
+          if (post._id === action.payload._id) {
+            return action.payload;
+          }
+          // return all the posts normally.....
+          return post;
+        }),
+      };
+
     case DELETE:
       return {
         ...state,

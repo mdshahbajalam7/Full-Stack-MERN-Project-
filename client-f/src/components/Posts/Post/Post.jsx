@@ -17,33 +17,38 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import { deletepost, likepost } from "../../../actions/posts";
 import { useNavigate } from "react-router-dom";
-function Post({
-  title,
-  post,
-  // linkCount,
-  setcurrentId,
-}) {
+import { useState } from "react";
+function Post({ title, post, setcurrentId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const user = JSON.parse(localStorage.getItem("profile"));
+  const [likes, setLikes] = useState(post?.likes);
+  const userId = user?.result?.googleId || user?.result?._id;
+  const haslikesedpost = post.likes.find((like) => like === userId);
+  const likesbutton = async () => {
+    dispatch(likepost(post._id));
+    if (haslikesedpost) {
+      setLikes(post.likes.filter((id) => id !== userId));
+    } else {
+      setLikes([...post.likes, userId]);
+    }
+  };
+
   const Likes = () => {
-    if (post.likes > 0) {
-      return post.likes.find(
-        (like) => like === (user?.result?.googleId || user?.result?._id)
-      ) ? (
+    if (likes.length > 0) {
+      return likes.find((like) => like === userId) ? (
         <>
           <ThumbUpAltIcon fontSize="small" />
           &nbsp;
-          {post.likes.length > 2
-            ? `You and ${post.likes.length - 1}others`
-            : `${post.likes.length} Likes${post.likes.length > 1 ? "s" : ""}`}
+          {likes.length > 2
+            ? `You and ${likes.length - 1}others`
+            : `${likes.length} Like${likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
           <ThumbUpAltOutlined fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+          &nbsp;{likes.length} {likes.length === 1 ? "Like" : "Likes"}
         </>
       );
     }
@@ -55,12 +60,15 @@ function Post({
     );
   };
   const openPost = () => {
-    navigate(`/posts/${post._id}`)
+    navigate(`/posts/${post._id}`);
   };
 
   return (
     <Card className={classes.card} raised elevation={6}>
-      <ButtonBase className={classes.cardActions}onClick={openPost}></ButtonBase>
+      <ButtonBase
+        className={classes.cardActions}
+        onClick={openPost}
+      ></ButtonBase>
       <CardMedia
         className={classes.media}
         image={post.selectedFile}
@@ -98,15 +106,13 @@ function Post({
           {post.message}
         </Typography>
       </CardContent>
-      
-      
 
       <CardActions className={classes.cardActions}>
         <Button
           size="small"
           color="primary"
           disabled={!user?.result}
-          onClick={() => dispatch(likepost(post._id))}
+          onClick={likesbutton}
         >
           <Likes />
         </Button>
@@ -114,7 +120,7 @@ function Post({
           user?.result?._id === post?.creator) && (
           <Button
             size="small"
-            color="primary"
+            color="secondary"
             onClick={() => dispatch(deletepost(post._id))}
           >
             <DeleteIcon fontSize="small" />
@@ -122,7 +128,6 @@ function Post({
           </Button>
         )}
       </CardActions>
-      
     </Card>
   );
 }
