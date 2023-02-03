@@ -26,6 +26,7 @@ function Form({ currentId, setcurrentId }) {
   const posts = useSelector((state) =>
     currentId ? state.posts.posts.find((p) => p._id === currentId) : null
   );
+  console.log(posts);
   // console.log(posts)
 
   useEffect(() => {
@@ -34,9 +35,9 @@ function Form({ currentId, setcurrentId }) {
 
   const handlesubmit = (e) => {
     e.preventDefault();
-    if (currentId === 0) {
-      dispatch(CreatePost({ ...postsData, name: user?.result?.name },navigate));
-     
+    console.log("currentId: ",currentId)
+    if (currentId === 0 || currentId === null) {
+      dispatch(CreatePost({ ...postsData, name: user?.result?.name },navigate)); //,navigate
       clear();
     } else {
       dispatch(
@@ -76,16 +77,6 @@ function Form({ currentId, setcurrentId }) {
         <Typography variant="h6">
           {currentId ? "Editing" : "Creating"} a Curd Operation{" "}
         </Typography>
-        {/* <TextField
-          name="creator"
-          label="Creator"
-          variant="outlined"
-          fullWidth
-          value={postsData.creator}
-          onChange={(e) =>
-            setpostsData({ ...postsData, creator: e.target.value })
-          }
-        /> */}
         <TextField
           name="title"
           label="Title"

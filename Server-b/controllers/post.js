@@ -3,7 +3,6 @@ import PostMessage from "../models/postMessage.js";
 
 export const getPosts = async (req, res) => {
   const { page } = req.query;
-  console.log(page);
   try {
     const LIMIT = 4;
     const startIndex = (Number(page) - 1) * LIMIT; //get the starting index of every page
@@ -90,6 +89,8 @@ export const createPosts = async (req, res) => {
     creator: req.userId,
     createdAt: new Date().toISOString(),
   });
+  // console.log("newPost",newPost.creator)
+  console.log("newPost",newPost)
   try {
     await newPost.save();
     res.status(201).json(newPost);
@@ -123,7 +124,7 @@ export const deletepost = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send("No post with that id");
 
-  PostMessage.findByIdAndRemove(id);
+  await PostMessage.findByIdAndRemove(id);
   res.json({ message: "post delete successfully" });
 };
 // LIKE POST HERE
