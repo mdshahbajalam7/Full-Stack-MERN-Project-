@@ -23,20 +23,20 @@ function Form({ currentId, setcurrentId }) {
     selectedFile: "",
   });
   const user = JSON.parse(localStorage.getItem("profile"));
-  const posts = useSelector((state) =>
+  const post = useSelector((state) =>
     currentId ? state.posts.posts.find((p) => p._id === currentId) : null
   );
-  console.log(posts);
+  // console.log(posts);
   // console.log(posts)
 
   useEffect(() => {
-    if (posts) setpostsData(posts);
-  }, [posts]);
+    if (post) setpostsData(post);
+  }, [post]);
 
   const handlesubmit = (e) => {
     e.preventDefault();
     console.log("currentId: ",currentId)
-    if (currentId === 0 || currentId === null) {
+    if (currentId === 0 ) {
       dispatch(CreatePost({ ...postsData, name: user?.result?.name },navigate)); //,navigate
       clear();
     } else {

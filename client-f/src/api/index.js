@@ -20,23 +20,30 @@ export const fetchPost = (id) => API.get(`/posts/${id}`);
 export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
 
 // search
-export const fetchPostsBySearch = (searchQuery) => {
-  console.log(searchQuery);
-  let getUrl = "/posts/search?searchQuery=";
+export const fetchPostsBySearch = (searchQuery) =>
+  API.get(
+    `/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${
+      searchQuery.tags
+    }`
+  );
+// {
+// console.log(searchQuery);
+// let getUrl = "/posts/search?searchQuery=";
 
-  if (searchQuery.search != "") {
-    getUrl += `${searchQuery.search}`;
-  }
+// if (searchQuery.search != "") {
+//   getUrl += `${searchQuery.search}`;
+// }
 
-  if (searchQuery.tags != "") {
-    if (searchQuery.search != "") {
-      getUrl += `&`;
-    }
-    getUrl += `tags=${searchQuery.tags}`;
-  }
+// if (searchQuery.tags != "") {
+//   if (searchQuery.search != "") {
+//     getUrl += `&`;
+//   }
+//   getUrl += `tags=${searchQuery.tags}`;
+// }
 
-  return API.get(getUrl);
-};
+// return API.get(getUrl);
+
+// };
 
 // create posts
 
@@ -48,7 +55,7 @@ export const updateposts = (id, updatePost) =>
 
 // delete posts
 export const deleteposts = (id) => API.delete(`/posts/${id}`);
- 
+
 // like posts
 export const linkposts = (id) => API.patch(`/posts/${id}/likepost`);
 
@@ -56,7 +63,7 @@ export const linkposts = (id) => API.patch(`/posts/${id}/likepost`);
 export const commnetposts = (value, id) =>
   API.post(`/posts/${id}/commnetpost`, { value });
 
-  // sign
+// sign
 export const SignIn = (formData) => API.post(`/user/signin`, formData);
 // sign out
 export const SignUp = (formData) => API.post(`/user/signup`, formData);
