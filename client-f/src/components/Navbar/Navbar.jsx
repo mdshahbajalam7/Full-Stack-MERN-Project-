@@ -46,14 +46,6 @@ function Navbar() {
         >
           Memorise Create
         </Typography>
-        {/* <img
-      className={classes.image}
-      src={memories}
-      alt="curd"
-      height="60"
-      // width="150"
-      // align="center"
-    /> */}
       </div>
       <Toolbar className={classes.toolbar}>
         {user ? (

@@ -29,7 +29,7 @@ export default (state = { isloading: true, posts: [] }, action) => {
         iserror: false,
       };
 
-    // GET DATABY SEARCH
+    // GET DATA BY SEARCH
     case FETCH_BY_SEARCH:
       return {
         ...state,

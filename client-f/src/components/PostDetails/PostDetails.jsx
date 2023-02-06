@@ -25,11 +25,11 @@ function PostDetails() {
     dispatch(getposts(id));
   }, [id]);
 
-  // useEffect(() => {
-  //   if (post) {
-  //     dispatch(getpostBySearch({ search: "none", tags: post?.tags.join(",") }));
-  //   }
-  // }, [post]);
+  useEffect(() => {
+    if (posts) {
+      dispatch(getpostBySearch({ search: "none", tags: post?.tags.join(",") }));
+    }
+  }, [posts]);
 
   if (!post) {
     return null;

@@ -28,7 +28,7 @@ function Home() {
   const query = useQuery();
   const navigate = useNavigate();
   const page = query.get("page") || 1;
-  const [search, setsearch] = useState("");
+  const [search, setsearch] = useState('');
   const [tags, settags] = useState([]);
   const searchQuery = query.get("searchQuery");
 
@@ -106,11 +106,11 @@ function Home() {
               </Button>
             </AppBar>
             <Form currentId={currentId} setcurrentId={setcurrentId} />
-            {/* {(!searchQuery && !tags.length) && ( */}
+            {(!searchQuery && !tags.length) && (
             <Paper elevation={6} className={classes.pagination}>
               <Paginations page={page} />
             </Paper>
-            {/* // )} */}
+            )}
           </Grid>
         </Grid>
       </Container>

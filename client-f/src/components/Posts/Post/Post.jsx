@@ -65,15 +65,15 @@ function Post({ title, post, setcurrentId }) {
 
   return (
     <Card className={classes.card} raised elevation={6}>
-      <ButtonBase
-        className={classes.cardActions}
-        onClick={openPost}
-      ></ButtonBase>
+      <ButtonBase className={classes.cardActions} onClick={openPost}>
+        {" "}
+      </ButtonBase>
       <CardMedia
         className={classes.media}
         image={post.selectedFile}
         title={title}
       />
+
       <div className={classes.overlay}>
         <Typography variant="h6">{post.name}</Typography>
         <Typography variant="body2">
